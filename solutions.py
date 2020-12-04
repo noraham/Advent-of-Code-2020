@@ -36,7 +36,45 @@ def day_one_part_two():
     
 ##########################    2    ###########################
 
+def day_two():
+    """
+    How many passwords are valid according to their policies?
+    min-max x: password
+    """
+    valid_pword_count = 0
+    with open('input/day_two_input.txt') as file:
+        for line in file:
+            policy, pword = line.split(':')
+            pword = pword.strip()
+            span, target_letter = policy.split(' ')
+            minimum, maximum = span.split('-')
+            minimum = int(minimum)
+            maximum = int(maximum)
+            count = pword.count(target_letter)
+            if count:
+                if count >= minimum and count <= maximum:
+                    valid_pword_count += 1
+    return valid_pword_count
+
+def day_two_part_two():
+    """
+    How many passwords are valid according to the new interpretation of the policies
+    """
+    valid_pword_count = 0
+    with open('input/day_two_input.txt') as file:
+        for line in file:
+            policy, pword = line.split(':')
+            pword = pword.strip()
+            places, target_letter = policy.split(' ')
+            place_1, place_2 = places.split('-')
+            index_1 = int(place_1) - 1
+            index_2 = int(place_2) - 1
+            if pword[index_1] == target_letter and pword[index_2] != target_letter:
+                valid_pword_count += 1
+            elif pword[index_2] == target_letter and pword[index_1] != target_letter:
+                valid_pword_count += 1
+    return valid_pword_count
 
 
 if __name__ == "__main__":
-    print(day_one_part_two())
+    print(day_two_part_two())
