@@ -75,6 +75,65 @@ def day_two_part_two():
                 valid_pword_count += 1
     return valid_pword_count
 
+##########################    3    ###########################
+
+def calc_trees_encountered(slope):
+    trees_encountered = 0
+    cursor = 0
+    index_of_last_value = 30
+    x_step, y_step = slope
+    with open('input/day_three_input.txt') as file:
+        for line_num, line in enumerate(file, 0):
+            if line_num % y_step == 0:
+                row = line.strip()
+                if cursor > index_of_last_value:
+                    cursor -= 31
+                if row[cursor] == '#':
+                    trees_encountered += 1
+                cursor += x_step
+    return trees_encountered
+
+
+def day_three():
+    """
+    Starting at the top-left corner of your map and following a slope of 
+    right 3 and down 1, how many trees would you encounter?
+    """
+    given_slope = (3, 1)
+    return calc_trees_encountered(given_slope)
+
+def day_three_part_two():
+    """
+    What do you get if you multiply together the number of trees encountered
+    on each of the listed slopes?
+    Right 1, down 1.
+    Right 3, down 1. (This is the slope you already checked.)
+    Right 5, down 1.
+    Right 7, down 1.
+    Right 1, down 2.
+    """
+    given_slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
+    product = 1
+    for slope in given_slopes:
+        trees_encountered = calc_trees_encountered(slope)
+        product = product * trees_encountered
+    return product
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
-    print(day_two_part_two())
+    print(day_three_part_two())
