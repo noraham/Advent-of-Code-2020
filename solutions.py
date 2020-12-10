@@ -119,9 +119,47 @@ def day_three_part_two():
         product = product * trees_encountered
     return product
 
+##########################    4    ###########################
 
+VALID_PASSPORT_KEYS = {'ecl', 'pid', 'eyr', 'hcl',
+'byr', 'iyr', 'cid', 'hgt'}
+NORTH_POLE_CREDENTIAL_KEYS = {'ecl', 'pid', 'eyr', 'hcl',
+'byr', 'iyr', 'hgt'}
 
+def day_four():
+    """
+    Count the number of valid passports - those that have all required fields. 
+    Treat cid as optional. In your batch file, how many passports are valid?
+    """
+    break_symbol = '\n'
+    valid_count = 0
+    not_valid_count = 0
+    with open('input/day_four_input.txt') as file:
+        passport = {}
+        for num, line in enumerate(file, 1):
+            if line == break_symbol or line == '':
+                passport_keys = passport.keys()
+                if passport_keys == VALID_PASSPORT_KEYS or passport_keys == NORTH_POLE_CREDENTIAL_KEYS:
+                    valid_count += 1
+                passport = {}
+            else:
+                line = line.strip()
+                items = line.split(' ')
+                for i in items:
+                    key, value = i.split(':')
+                    passport[key] = value
+    passport_keys = passport.keys()
+    if passport_keys == VALID_PASSPORT_KEYS or passport_keys == NORTH_POLE_CREDENTIAL_KEYS:
+        valid_count += 1
+    return valid_count
 
+def day_four_part_two():
+    """
+    Count the number of valid passports - those that have all required fields 
+    and valid values. Continue to treat cid as optional. In your batch file, 
+    how many passports are valid?
+    """
+    ...
 
 
 
@@ -136,4 +174,4 @@ def day_three_part_two():
 
 
 if __name__ == "__main__":
-    print(day_three_part_two())
+    print(day_four())
