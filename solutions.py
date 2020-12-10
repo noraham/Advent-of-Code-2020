@@ -161,6 +161,103 @@ def day_four_part_two():
     """
     ...
 
+##########################    5    ###########################
+
+GO_LOWER = {'F', 'L'}
+GO_HIGHER = {'B', 'R'}
+
+def get_seat_id(r, c):
+    return r * 8 + c
+
+def follow_directions(directions, remaining_options):
+    if len(remaining_options) == 1:
+        return remaining_options[0]
+    direction = directions[0]
+    remaining_directions = directions[1:]
+    mid_point = len(remaining_options) // 2
+    if direction in GO_LOWER:
+        remaining_options = remaining_options[:mid_point]
+    elif direction in GO_HIGHER:
+        remaining_options = remaining_options[mid_point:]
+    return follow_directions(remaining_directions, remaining_options)
+            
+
+def day_five():
+    """
+    What is the highest seat ID on a boarding pass?
+    row = 0 - 127
+    column = 0 - 7
+    seat_id = row * 8 + column
+    Since we are searching through 2 ordered lists, implement binary search
+    """
+    max_seat_id = 0
+    with open('input/day_five_input.txt') as file:
+        for line in file:
+            line = line.strip()
+            row_directions = line[:7]
+            column_directions = line[7:]
+            row = follow_directions(row_directions, list(range(0, 128)))
+            column = follow_directions(column_directions, list(range(0, 8)))
+            seat_id = get_seat_id(row, column)
+            if seat_id > max_seat_id:
+                max_seat_id = seat_id
+    return max_seat_id
+
+def day_five_part_two():
+    """
+    What is the ID of your seat? (the only missing seat_id in the list)
+    """
+    occupied_seats = []
+    with open('input/day_five_input.txt') as file:
+        for line in file:
+            line = line.strip()
+            row_directions = line[:7]
+            column_directions = line[7:]
+            row = follow_directions(row_directions, list(range(0, 128)))
+            column = follow_directions(column_directions, list(range(0, 8)))
+            seat_id = get_seat_id(row, column)
+            occupied_seats.append(seat_id)
+        occupied_seats.sort()
+        all_seats = range(occupied_seats[0], occupied_seats[-1] + 1)
+        diff = set(all_seats) - set(occupied_seats)
+    return diff
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -174,4 +271,4 @@ def day_four_part_two():
 
 
 if __name__ == "__main__":
-    print(day_four())
+    print(day_five_part_two())
